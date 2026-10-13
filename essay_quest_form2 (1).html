@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Essay Quest — Form 2 English</title>
+<style>
+:root{--purple:#d94f91;--purple2:#f28db8;--ink:#263b32;--muted:#61756a;--line:#d5eadb;--bg:#effaf0;--green:#258b59}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 8% 12%,#ffd9e8 0 65px,transparent 67px),radial-gradient(circle at 94% 25%,#ccefd2 0 90px,transparent 92px),radial-gradient(circle at 7% 78%,#ffe9b9 0 55px,transparent 57px),radial-gradient(circle at 94% 88%,#f7cde1 0 75px,transparent 77px),var(--bg);font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink);line-height:1.5}
+.wrap{max-width:900px;margin:0 auto;padding:20px}
+.hero{position:relative;overflow:hidden;background:linear-gradient(130deg,#249b68,#55c68a 58%,#f28ab6);color:#fff;padding:28px;border:4px solid #fff;border-radius:28px;box-shadow:0 10px 25px #286e4930}.hero:after{content:'🌼  ✨  🍓';position:absolute;right:18px;bottom:10px;font-size:clamp(1.2rem,3vw,2rem);opacity:.9;transform:rotate(-5deg)}
+.kicker{font-size:.78rem;letter-spacing:.12em;font-weight:800;text-transform:uppercase;opacity:.9}.hero h1{font-size:clamp(2rem,6vw,3.3rem);line-height:1.08;margin:8px 0}.hero p{margin:10px 0 0}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.pill{background:#ffffff35;border:1px solid #ffffff70;border-radius:99px;padding:5px 12px;font-size:.9rem}
+.status{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:22px 0 8px;font-weight:800}.progress{height:10px;background:#d8efdd;border:2px solid white;border-radius:20px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,#37a96c,#ed78ad);transition:width .25s}
+.card{position:relative;background:#fffefa;border:3px solid #d5eadb;border-radius:24px;padding:clamp(18px,4vw,30px);margin-top:18px;box-shadow:0 7px 0 #d5eadb,0 12px 24px #286e4910}
+h2{font-size:clamp(1.5rem,4vw,2rem);margin:5px 0 8px}h3{margin:20px 0 8px;font-size:1.08rem}.muted{color:var(--muted)}.small{font-size:.9rem}
+.choice{display:flex;align-items:flex-start;gap:12px;width:100%;text-align:left;padding:13px;margin-top:9px;background:#fff;border:1.5px solid var(--line);border-radius:12px;color:var(--ink);font:inherit;cursor:pointer;transition:.15s}
+.choice:hover{border-color:var(--purple);transform:translateY(-1px);background:#fff4f8}.choice.selected{border:2px solid var(--purple);background:#fff0f6}
+.letter{display:grid;place-items:center;min-width:30px;height:30px;border-radius:10px;background:#dff5e5;color:#247c50;font-weight:900}
+.choice-text{flex:1}.tick{font-weight:900;color:var(--purple)}
+.actions{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:18px}
+button.action{border:0;border-radius:11px;padding:12px 17px;font:inherit;font-weight:800;cursor:pointer}
+.primary{background:var(--purple);color:#fff}.secondary{background:#fff;color:var(--ink);border:1px solid var(--line)!important}.primary:disabled,.secondary:disabled{opacity:.4;cursor:not-allowed}
+.error{color:#b42338;font-weight:700;margin-top:12px}.essay{white-space:pre-wrap;background:#fff3f8;border:2px dashed #efa2c3;border-radius:16px;padding:18px;line-height:1.9;margin:16px 0}
+.checklist{background:#edfaf0;border:2px solid #b8e3c5;border-radius:16px;padding:16px;margin-top:16px}.checklist div{margin:6px 0}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:20px}
+@media(max-width:520px){.wrap{padding:12px}.hero{padding:22px}.status{font-size:.9rem}.actions button{flex:1}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <div class="kicker">Form 2 • English Writing</div>
+  <h1>🎮 Essay Quest</h1>
+  <p>Choose your ideas. Build your paragraphs. Unlock your essay!</p>
+  <div class="pills"><span class="pill">🏆 4 levels</span><span class="pill">⭐ 100 points</span><span class="pill">✍️ 3 paragraphs</span></div>
+</header>
+<div class="status"><span id="stage-label">LEVEL 1 OF 4</span><span id="score">0 / 100 points</span></div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<main class="card" id="main" aria-live="polite"></main>
+<div class="actions"><button class="action secondary" id="back" disabled>← Back</button><button class="action primary" id="next">Next challenge →</button></div>
+<footer>Choose the ideas you prefer. Every option is acceptable. Your choices will be combined into a three-paragraph essay.</footer>
+</div>
+<script>
+const stages=[
+{title:"🌟 Level 1: Choose your introduction",desc:"Start with a general statement and tell readers what your essay is about.",questions:[
+{key:"intro",label:"Choose an opening sentence.",options:["Examinations are an important part of school life.","Every student wants to do well in examinations.","Good preparation helps students feel ready for examinations."]},
+{key:"what",label:"What do you do to prepare?",options:["I make a study timetable and revise my lessons.","I read my notes and practise answering questions.","I review difficult topics and set study goals."]}]},
+{title:"📚 Level 2: Build your body paragraph",desc:"Explain how you prepare. Choose a method and explain why it helps.",questions:[
+{key:"method",label:"How do you study effectively?",options:["I summarise important points and use flashcards.","I answer past-year questions and check my mistakes.","I ask my teachers and friends when I need help."]},
+{key:"reason",label:"Why is this method useful?",options:["This helps me remember information and understand topics better.","As a result, I can identify my weaknesses and improve.","In this way, I can learn more confidently and effectively."]}]},
+{title:"🏫 Level 3: Choose your study place",desc:"Describe where you study and explain how the place helps you.",questions:[
+{key:"place",label:"Where should you study?",options:["I study in a quiet place, such as my bedroom.","I prefer studying in the school library.","I study at a tidy desk in a comfortable corner of my home."]},
+{key:"benefit",label:"How does this place help you?",options:["It helps me concentrate without unnecessary distractions.","I can organise my books and focus on my work.","The peaceful environment helps me stay calm and focused."]}]},
+{title:"🏆 Level 4: Final writing challenge",desc:"Choose a concluding sentence. Your three-paragraph essay will then be generated!",questions:[
+{key:"ending",label:"How would you end your essay?",options:["In conclusion, good preparation is the key to examination success.","To sum up, planning and practising can help us achieve better results.","Therefore, every student should prepare early and do their best."]}]}
+];
+const points=[20,30,30,20];let stage=0,answers={},complete=false;
+const $=id=>document.getElementById(id);
+function choiceValue(key){const q=stages.flatMap(s=>s.questions).find(q=>q.key===key);return q.options[answers[key]]}
+function draw(){
+  $("stage-label").textContent=complete?"ESSAY UNLOCKED!":`LEVEL ${stage+1} OF 4`;
+  $("score").textContent=(complete?100:points.slice(0,stage).reduce((a,b)=>a+b,0))+" / 100 points";
+  $("bar").style.width=(complete?100:stage/4*100)+"%";
+  $("back").disabled=stage===0||complete;
+  $("next").textContent=complete?"Play again ↻":stage===3?"🏆 Create my essay!":"Next challenge →";
+  const main=$("main");main.innerHTML="";
+  if(complete){renderEssay(main);return}
+  const s=stages[stage];
+  const kicker=document.createElement("div");kicker.className="small muted";kicker.textContent=`CHALLENGE ${stage+1}`;main.append(kicker);
+  const h=document.createElement("h2");h.textContent=s.title;main.append(h);
+  const desc=document.createElement("p");desc.className="muted";desc.textContent=s.desc;main.append(desc);
+  s.questions.forEach((q,qi)=>{
+    const section=document.createElement("section");const h3=document.createElement("h3");h3.textContent=`${qi+1}. ${q.label}`;section.append(h3);
+    q.options.forEach((opt,i)=>{
+      const b=document.createElement("button");b.type="button";b.className="choice"+(answers[q.key]===i?" selected":"");b.setAttribute("aria-pressed",answers[q.key]===i?"true":"false");
+      const letter=document.createElement("span");letter.className="letter";letter.textContent=String.fromCharCode(65+i);
+      const text=document.createElement("span");text.className="choice-text";text.textContent=opt;
+      const tick=document.createElement("span");tick.className="tick";tick.textContent=answers[q.key]===i?"✓":"";
+      b.append(letter,text,tick);b.addEventListener("click",()=>{answers[q.key]=i;draw()});section.append(b);
+    });main.append(section);
+  });
+  const note=document.createElement("p");note.className="small muted";note.textContent="Select one answer for every question. All options are correct—choose the ideas that best express your thoughts.";main.append(note);
+}
+function essayParagraphs(){
+ const p1=choiceValue("intro")+" "+choiceValue("what")+" I usually begin my preparation a few weeks before the examination.";
+ const p2=choiceValue("method")+" "+choiceValue("reason")+" I also take short breaks so that I do not feel too tired. By following my study plan, I can use my time wisely.";
+ const p3=choiceValue("place")+" "+choiceValue("benefit")+" I make sure I get enough sleep and prepare my stationery the night before. "+choiceValue("ending");
+ return [p1,p2,p3];
+}
+function renderEssay(main){
+ const paras=essayParagraphs(),count=paras.join(" ").trim().split(/\s+/).length;
+ const tag=document.createElement("div");tag.className="small";tag.style.fontWeight="800";tag.textContent="🎉 CONGRATULATIONS, ESSAY CHAMPION!";main.append(tag);
+ const h=document.createElement("h2");h.textContent="How to Prepare for an Examination";main.append(h);
+ const info=document.createElement("p");info.className="muted small";info.textContent=`3 paragraphs • ${count} words • 100 points`;main.append(info);
+ const essay=document.createElement("div");essay.className="essay";
+ paras.forEach((p,i)=>{const para=document.createElement("p");para.textContent=p;para.style.margin="0 0 "+(i<2?"14px":"0");essay.append(para)});main.append(essay);
+ const check=document.createElement("div");check.className="checklist";const ch=document.createElement("h3");ch.style.marginTop="0";ch.textContent="✅ Essay checklist";check.append(ch);
+ ["Three clear paragraphs","All essay notes covered","Reasons and supporting details included","Linking words used","Introduction and conclusion included"].forEach(t=>{const d=document.createElement("div");d.textContent="✓ "+t;check.append(d)});main.append(check);
+ const actions=document.createElement("div");actions.className="actions";
+ const copy=document.createElement("button");copy.className="action primary";copy.textContent="Copy essay";copy.addEventListener("click",async()=>{const text="How to Prepare for an Examination\n\n"+paras.join("\n\n");try{await navigator.clipboard.writeText(text);copy.textContent="Copied!"}catch(e){const ta=document.createElement("textarea");ta.value=text;main.append(ta);ta.select();document.execCommand("copy");copy.textContent="Copied!"}});actions.append(copy);
+ const change=document.createElement("button");change.className="action secondary";change.textContent="← Change my choices";change.addEventListener("click",()=>{complete=false;stage=0;draw()});actions.append(change);main.append(actions);
+ const tip=document.createElement("p");tip.className="small muted";tip.textContent="Teacher tip: Ask students to read the essay aloud, check the word count, and improve one sentence in their own words.";main.append(tip);
+}
+$("back").addEventListener("click",()=>{if(stage>0&&!complete){stage--;draw()}});
+$("next").addEventListener("click",()=>{
+ if(complete){stage=0;answers={};complete=false;draw();return}
+ const missing=stages[stage].questions.find(q=>answers[q.key]===undefined);
+ if(missing){let err=$("main").querySelector(".error");if(!err){err=document.createElement("p");err.className="error";err.textContent="Please choose an answer for every question before continuing."; $("main").append(err)}return}
+ if(stage<3){stage++;draw()}else{complete=true;draw()}
+});
+draw();
+</script>
+</body>
+</html>
